@@ -8,9 +8,16 @@ public class Queens {
      * @param partial The partial solution
      * @return true if the partial solution is complete, false otherwise.
      */
+    // partial = {0, 0, 0, 0, 0, 0, 0, 0}
     public static boolean isFullSolution(int[] partial) {
         // TODO: Implement this method
-        return false;
+        //for (int i = 0; i < partial.length; i++){
+        for (int i = 7; i >= 0; i--){
+        	if (partial[i] == 0){
+        		return false;
+        	}
+        }
+        return true;
     }
 
     /**
@@ -21,6 +28,33 @@ public class Queens {
      */
     public static boolean reject(int[] partial) {
         // TODO: Implement this method
+        // return false;
+
+        // check every pair of queens
+        for (int i=0; i<8; i++){
+        	for (int k=0; k<i; k++){
+
+        		// one of these has no queen
+        		if (partial[i] == 0 || partial[k] == 0){
+        			continue;
+        		}
+        		// diff coln, queens are in the same row
+        		else if (i != k && partial[i] == partial[k]){
+        			return true;
+        		}
+
+        		// queens, positive diagonally, slope +1
+        		else if (partial[i] - partial[k] == i - k){
+        			return true;
+        		}
+        		// queens, negative diagonally, slope -1
+        		else if (partial[i] - partial[k] == k - i){
+        			return true;
+        		}
+
+        	}
+            
+        }
         return false;
     }
 
@@ -31,6 +65,21 @@ public class Queens {
      */
     public static int[] extend(int[] partial) {
         // TODO: implement this method
+        int [] temp = new int[8];
+
+        for (int i=0; i < 8; i++){
+
+        	if (partial[i] != 0){
+        		temp[i] = partial[i];
+        	}
+        	else {
+        		// place a queen in the first row
+        		temp[i] = 1;
+        		return temp;
+        	}
+        }
+
+        // if no queen can be added
         return null;
     }
 
@@ -42,7 +91,29 @@ public class Queens {
      */
     public static int[] next(int[] partial) {
         // TODO: implement this method
-        return null;
+        int [] temp = new int[8];
+        int i = 0;
+
+        while (i < 8){
+        	// partial = {0, 0, 0, 0, 0, 0, 0, 0}
+        	// partial = {2, 7, 4, 8, 3, 5, 0, 0}
+        	// we've reached the last placed queen
+        	if (i ==7 || partial[i+1] == 0) {
+        		if (partial[i] == 8){
+        			return null;
+        		}
+        		else {
+        			temp[i] = partial[i] + 1;
+        			break;
+        		}
+        	}
+        	else {
+        		// there's a queen but it's not the last one
+        		temp[i] = partial[i];
+        	}
+        	i++;
+        }
+        return temp;
     }
 
     /**
